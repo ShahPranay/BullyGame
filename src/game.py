@@ -1,6 +1,7 @@
-import pygame, sys
-from src.settings import *
-from src.level import Level
+import sys
+import pygame
+from settings import *
+from level import Level
 
 class Game:
     def __init__(self):
@@ -23,3 +24,8 @@ class Game:
             self.level.run()
             pygame.display.update()
             self.clock.tick(FPS)
+
+
+if __name__ == '__main__':
+    game = Game()
+    game.run()

@@ -1,16 +1,20 @@
 import pygame
-from src.settings import *
+from settings import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites):
         super().__init__(groups)
-        self.image = pygame.image.load('./graphics/test/player.png').convert_alpha()
+        self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0, -26)
 
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
+        # movement 
+        self.attacking = False
+        self.attack_cooldown = 400
+        self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
 
     def input(self):
@@ -29,6 +33,22 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
+
+        # attack input 
+        if keys[pygame.K_SPACE]:
+            self.attacking = True
+            # self.attack_time = pygame.time.get_ticks()
+            # self.create_attack()
+            # self.weapon_attack_sound.play()
+
+        # magic input 
+        if keys[pygame.K_LCTRL]:
+            self.attacking = True
+            # self.attack_time = pygame.time.get_ticks()
+            # style = list(magic_data.keys())[self.magic_index]
+            # strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
+            # cost = list(magic_data.values())[self.magic_index]['cost']
+            # self.create_magic(style,strength,cost)
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
@@ -56,6 +76,26 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     elif self.direction.y < 0:
                         self.hitbox.top = sprite.hitbox.bottom
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+        
+        # if self.attacking:
+        #      if current_time - self.attack_time >= self.attack_cooldown + weapon_data[self.weapon]['cooldown']:
+        #         self.attacking = False
+        #         self.destroy_attack()
+
+        # if not self.can_switch_weapon:
+        #      if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
+        #           self.can_switch_weapon = True
+                  
+        # if not self.can_switch_magic:
+        #      if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
+        #           self.can_switch_magic = True
+                  
+        # if not self.vulnerable:
+        #     if current_time - self.hurt_time >= self.invulnerability_duration:
+        #         self.vulnerable = True
 
     def update(self):
         self.input()
