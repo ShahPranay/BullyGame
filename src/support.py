@@ -20,3 +20,56 @@ def import_folder(path):
 			surface_list.append(image_surf)
 
 	return surface_list
+
+class TextNode:
+    def __init__(self, nodeid, text, leftchoice = None, rightchoice = None, action_type = ''):
+        self.nodeid = nodeid
+        self.action_type = action_type
+        self.text = text
+        self.leftchoice = leftchoice
+        self.rightchoice = rightchoice
+
+    def get_choice_cnt(self):
+        if self.leftchoice is not None:
+            if self.rightchoice is not None:
+                return 2
+            else:
+                return 1
+        else:
+            return 0
+
+    def get_next_node(self, choice):
+        if self.get_choice_cnt() == 0:
+            return None
+        elif self.get_choice_cnt() == 1:
+            return self.leftchoice
+        elif choice == 0:
+            return self.leftchoice
+        else:
+            return self.rightchoice
+
+def get_dict(dic, key):
+    if key in dic.keys():
+        return dic[key]
+    else:
+        return None
+
+def import_csv_chat_tree(path):
+    chat_tree = {'Bully' : [], 'Student' : []}
+    for character_type, root_nodes in chat_tree.items():
+        full_path = path + '/' + character_type + '.csv'
+        all_lines = []
+        with open(full_path) as file:
+            tmp_tree = reader(file, delimiter=';')
+            for row in tmp_tree:
+                all_lines.append(row)
+        all_lines.reverse()
+        nodes = {}
+        for row in all_lines:
+            # nodeid text leftid rightid action_type
+            treenode = TextNode(int(row[0]), row[1], get_dict(nodes, row[2]), get_dict(nodes, row[3]), row[4])
+            if row[0] == '0':
+                root_nodes.append(treenode)
+            else:
+                nodes[row[0]] = treenode
+    return chat_tree
