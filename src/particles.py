@@ -17,6 +17,8 @@ class AnimationPlayer:
 			'thunder': import_folder('./graphics/particles/thunder'),
 
 			# monster deaths
+            'bully1': import_folder('./graphics/particles/bully1'),
+			'bully2': import_folder('./graphics/particles/bully2'),
 			'squid': import_folder('./graphics/particles/smoke_orange'),
 			'raccoon': import_folder('./graphics/particles/raccoon'),
 			'spirit': import_folder('./graphics/particles/nova'),
