@@ -33,7 +33,7 @@ class Menu:
                 self.can_select = False
                 self.selection_time = pygame.time.get_ticks()
 
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_RETURN]:
                 self.can_select = False
                 self.selection_time = pygame.time.get_ticks()
                 if self.selection_index == 0:

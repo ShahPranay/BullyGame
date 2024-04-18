@@ -210,6 +210,8 @@ class Level:
         self.ui.display(self.player)
         self.story.update()
 
+        if self.player.health<=0:
+            self.game_paused = True
 
         if self.is_talking:
             # print("is talking is true, " , self.chatbox.status)
