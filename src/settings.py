@@ -34,6 +34,13 @@ BAR_COLOR = '#EEEEEE'
 BAR_COLOR_SELECTED = '#111111'
 UPGRADE_BG_COLOR_SELECTED = '#EEEEEE'
 
+# chatbox
+CHATBOX_COLOR = '#111111'
+CHOICE_COLOR = '#202020'
+CHOICE_COLOR_SELECTED = '#EEEEEE'
+CHOICE_TEXT_COLOR = '#EEEEEE'
+CHOICE_TEXT_COLOR_SELECTED = '#202020'
+
 # weapons 
 weapon_data = {
 	'sword': {'cooldown': 100, 'damage': 15,'graphic':'./graphics/weapons/sword/full.png'},

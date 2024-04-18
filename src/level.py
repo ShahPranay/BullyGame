@@ -1,4 +1,5 @@
-import pygame 
+import pygame
+from src.bully import Enemy
 from src.settings import *
 from src.tile import Tile
 from src.player import Player
@@ -7,7 +8,7 @@ from src.support import *
 from random import choice, randint
 from src.weapon import Weapon
 from src.ui import UI
-from src.enemy import Enemy
+# from src.bully import Bully
 from src.particles import AnimationPlayer
 from src.magic import MagicPlayer
 from src.upgrade import Upgrade
@@ -29,6 +30,10 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
 
+        # chatbox
+        self.is_talking = False
+        self.chatbox = ChatBox()
+
         # sprite setup
         self.create_map()
 
@@ -40,9 +45,6 @@ class Level:
         self.animation_player = AnimationPlayer()
         self.magic_player = MagicPlayer(self.animation_player)
 
-        # chatbox
-        self.is_talking = True
-        self.chatbox = ChatBox()
 
     def create_map(self):
         layouts = {
@@ -90,17 +92,18 @@ class Level:
                             #     elif col == '391': monster_name = 'spirit'
                             #     elif col == '392': monster_name ='raccoon'
                             #     else: monster_name = 'squid'
-                            #     Enemy(
-                            #             monster_name,
-                            #             (x,y),
-                            #             [self.visible_sprites,self.attackable_sprites],
-                            #             self.obstacle_sprites,
-                            #             self.damage_player,
-                            #             self.trigger_death_particles,
-                            #             self.add_exp)
+        Enemy(
+                'bamboo',
+                (2000,500),
+                [self.visible_sprites,self.attackable_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp,
+                self.chatbox.get_chat_node('Bully'))
 
     def create_attack(self):
-
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
     def create_magic(self,style,strength,cost):
@@ -129,6 +132,12 @@ class Level:
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
+
+    def initiate_chat(self, talking_to):
+        self.chatbox.set_chat_node(talking_to)
+        self.is_talking = True
+        self.chatbox.status = 'ongoing'
+        self.talking_to = talking_to
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:
@@ -159,6 +168,9 @@ class Level:
             else:
                 # do action based on collision
                 self.is_talking = False
+                self.talking_to.mood = self.chatbox.action_type
+                self.talking_to.chat_node = self.chatbox.curNode
+                self.talking_to.chat_node_set_time = pygame.time.get_ticks()
         elif self.game_paused:
             self.upgrade.display()
         else:

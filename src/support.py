@@ -55,21 +55,22 @@ def get_dict(dic, key):
         return None
 
 def import_csv_chat_tree(path):
-    chat_tree = {'Bully' : [], 'Student' : []}
-    for character_type, root_nodes in chat_tree.items():
-        full_path = path + '/' + character_type + '.csv'
-        all_lines = []
-        with open(full_path) as file:
-            tmp_tree = reader(file, delimiter=';')
-            for row in tmp_tree:
-                all_lines.append(row)
-        all_lines.reverse()
-        nodes = {}
-        for row in all_lines:
-            # nodeid text leftid rightid action_type
-            treenode = TextNode(int(row[0]), row[1], get_dict(nodes, row[2]), get_dict(nodes, row[3]), row[4])
-            if row[0] == '0':
-                root_nodes.append(treenode)
-            else:
-                nodes[row[0]] = treenode
+    chat_tree = {  }
+    for _, __, csv_files in walk(path):
+        for csv_file in csv_files:
+            full_path = path + '/' + csv_file
+            all_lines = []
+            with open(full_path) as file:
+                tmp_tree = reader(file, delimiter=';')
+                for row in tmp_tree:
+                    all_lines.append(row)
+            all_lines.reverse()
+            nodes = {}
+            for row in all_lines:
+                # nodeid text leftid rightid action_type
+                treenode = TextNode(int(row[0]), row[1], get_dict(nodes, row[2]), get_dict(nodes, row[3]), row[4])
+                if row[0] == '0':
+                    chat_tree[csv_file.split('.')[0]] = treenode
+                else:
+                    nodes[row[0]] = treenode
     return chat_tree
