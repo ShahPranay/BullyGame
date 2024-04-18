@@ -61,6 +61,10 @@ class Menu:
         item2 = Item(left2,top,self.width,self.heigth,1,self.font)
         self.option_list.append(item2)
             
+        # for option in range(2):
+        #     full_width = self.display_surface.get_size()[0]
+        #     increment = full_width // 2
+        #     left = (option * increment) + (increment - )
 
     def display_menu(self):
         self.input()

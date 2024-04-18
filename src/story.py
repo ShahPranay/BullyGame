@@ -4,17 +4,27 @@ from src.support import *
 def fun_0(story):
     if story.entity_map['bully1'].finished_chat:
         story.entity_map['bully1'].mood = 'idle'
+        story.level.create_security()
+        story.entity_map['security'].set_chat_node(story.chattrees['security_complain'])
         return 1
     else:
         return 0
-
 
 def fun_1(story):
     if story.entity_map['player'].grass_cnt >= 1:
         story.entity_map['bully1'].set_chat_node(story.chattrees['bully1_finishtask'])
         return 2
 
-    ### logic for complaining, return to state 2
+    if story.entity_map['security'].finished_chat:
+        story.entity_map['security'].mood = 'idle'
+        if story.level.chatbox.choice_made == 1:
+            story.level.chatbox.choice_made = 0
+        else:
+            story.entity_map['bully1'].kill()
+            del story.entity_map['bully1']
+            story.level.create_bully2()
+            story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_givetask'])
+            return 3
 
     if story.entity_map['bully1'].finished_chat:
         story.entity_map['bully1'].mood = 'idle'
@@ -61,7 +71,7 @@ def fun_4(story):
 
 def fun_5(story):
     if story.entity_map['bully2'].health <= 0:
-        # give rocks
+        story.entity_map['player'].bat_unlock = True
         del story.entity_map['bully2']
         story.level.create_bully3()
         story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_givetask'])

@@ -139,6 +139,16 @@ class Level:
                 self.trigger_death_particles,
                 self.add_exp)
 
+    def create_security(self):
+        self.entity_map['security'] = Enemy(
+                'security',
+                (716,2799),
+                [self.visible_sprites,self.attackable_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
