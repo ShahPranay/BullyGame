@@ -4,7 +4,7 @@ from src.entity import Entity
 from src.support import *
 
 class Enemy(Entity):
-    def __init__(self,monster_name,pos,groups,obstacle_sprites,initiate_chat ,damage_player,trigger_death_particles,add_exp, chat_node):
+    def __init__(self,monster_name,pos,groups,obstacle_sprites,initiate_chat ,damage_player,trigger_death_particles,add_exp):
 
         # general setup
         super().__init__(groups)
@@ -43,9 +43,10 @@ class Enemy(Entity):
 
         # chatbox
         self.initiate_chat = initiate_chat
+        self.finished_chat = False
         self.mood = 'idle'
         self.talking_cooldown = 3000
-        self.chat_node = chat_node
+        self.chat_node = None
         self.chat_node_set_time = pygame.time.get_ticks()
 
         # invincibility timer
@@ -60,6 +61,12 @@ class Enemy(Entity):
         self.death_sound.set_volume(0.6)
         self.hit_sound.set_volume(0.6)
         self.attack_sound.set_volume(0.6)
+
+    def set_chat_node(self, chat_node):
+        print("set_chat_node")
+        self.chat_node = chat_node
+        self.finished_chat = False
+        self.chat_node_set_time = pygame.time.get_ticks()
 
     def import_graphics(self,name):
         self.animations = {'idle':[],'move':[],'attack':[]}
@@ -82,18 +89,20 @@ class Enemy(Entity):
         (player_distance, player_direction) = self.get_distance_direction(player.rect.center)
         (origin_distance, origin_direction) = self.get_distance_direction(self.origin)
 
-        if self.mood != 'idle' and player_distance <= self.attack_radius:
-            if self.mood == 'talk':
-                self.initiate_chat(self)
-                self.status = 'idle'
-                return
-            if self.can_attack:
-                if self.status != 'attack':
-                    self.frame_index = 0
-                self.status = 'attack'
-        elif player_distance <= self.notice_radius:
-            self.status = 'move'
-            self.direction = player_direction
+        if self.mood != 'idle':
+            if player_distance <= self.attack_radius:
+                if self.mood == 'talk':
+                    self.initiate_chat(self)
+                    self.chat_node = None
+                    self.status = 'idle'
+                    return
+                if self.can_attack:
+                    if self.status != 'attack':
+                        self.frame_index = 0
+                    self.status = 'attack'
+            elif player_distance <= self.notice_radius:
+                self.status = 'move'
+                self.direction = player_direction
         else:
             if origin_distance >= 0.01:
                 self.status = 'move'
@@ -144,7 +153,7 @@ class Enemy(Entity):
     def get_damage(self,player,attack_type):
         if self.vulnerable:
             self.hit_sound.play()
-            self.direction = self.get_player_distance_direction(player)[1]
+            self.direction = self.get_distance_direction(player.rect.center)[1]
             if attack_type == 'weapon':
                 self.health -= player.get_full_weapon_damage()
             else:

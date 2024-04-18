@@ -22,9 +22,8 @@ def import_folder(path):
 	return surface_list
 
 class TextNode:
-    def __init__(self, nodeid, text, leftchoice = None, rightchoice = None, action_type = ''):
+    def __init__(self, nodeid, text, leftchoice = None, rightchoice = None):
         self.nodeid = nodeid
-        self.action_type = action_type
         self.text = text
         self.leftchoice = leftchoice
         self.rightchoice = rightchoice
@@ -68,7 +67,7 @@ def import_csv_chat_tree(path):
             nodes = {}
             for row in all_lines:
                 # nodeid text leftid rightid action_type
-                treenode = TextNode(int(row[0]), row[1], get_dict(nodes, row[2]), get_dict(nodes, row[3]), row[4])
+                treenode = TextNode(int(row[0]), row[1], get_dict(nodes, row[2]), get_dict(nodes, row[3]))
                 if row[0] == '0':
                     chat_tree[csv_file.split('.')[0]] = treenode
                 else:

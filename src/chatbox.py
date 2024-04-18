@@ -15,20 +15,15 @@ class ChatBox:
         self.text_speed = 3
         self.done = True
 
-        self.chattrees = import_csv_chat_tree('./chat_trees')
         self.curNode = None
         self.cur_choice = 0
 
         self.status = 'ongoing'
-        self.action_type = 'idle'
 
         self.set_message()
 
         self.can_change_choice = True
         self.choice_change_time = 0
-
-    def get_chat_node(self, chat_type):
-        return self.chattrees[chat_type]
 
     def set_chat_node(self, talking_to):
         self.curNode = talking_to.chat_node
@@ -85,11 +80,10 @@ class ChatBox:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
             nxt_node = self.curNode.get_next_node(self.cur_choice)
-            if self.curNode.action_type != '':
-                self.action_type = self.curNode.action_type
-                self.status = 'finished'
             self.curNode = nxt_node
             if self.curNode is  None:
+                print("status changed to finished")
+                self.status = 'finished'
                 return
             self.set_message()
         

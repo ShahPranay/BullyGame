@@ -12,6 +12,7 @@ from src.ui import UI
 from src.particles import AnimationPlayer
 from src.magic import MagicPlayer
 from src.chatbox import ChatBox
+from src.story import Story
 
 class Level:
     def __init__(self):
@@ -32,9 +33,11 @@ class Level:
         # chatbox
         self.is_talking = False
         self.chatbox = ChatBox()
+        self.entity_map = {}
 
         # sprite setup
         self.create_map()
+        self.story = Story(self.entity_map)
 
         # user interface 
         self.ui = UI()
@@ -85,21 +88,21 @@ class Level:
                                         self.create_attack,
                                         self.destroy_attack,
                                         self.create_magic)
+                                self.entity_map['player'] = self.player
                             # else:
                             #     if col == '390': monster_name = 'bamboo'
                             #     elif col == '391': monster_name = 'spirit'
                             #     elif col == '392': monster_name ='raccoon'
                             #     else: monster_name = 'squid'
-        Enemy(
+        self.entity_map['bully1'] = Enemy(
                 'bamboo',
-                (2000,500),
+                (5000,2200),
                 [self.visible_sprites,self.attackable_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
                 self.trigger_death_particles,
-                self.add_exp,
-                self.chatbox.get_chat_node('Bully'))
+                self.add_exp)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
@@ -155,16 +158,17 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.ui.display(self.player)
+        self.story.update()
+
 
         if self.is_talking:
+            # print("is talking is true, " , self.chatbox.status)
             if self.chatbox.status == 'ongoing':
                 self.chatbox.display()
             else:
-                # do action based on collision
                 self.is_talking = False
-                self.talking_to.mood = self.chatbox.action_type
-                self.talking_to.chat_node = self.chatbox.curNode
-                self.talking_to.chat_node_set_time = pygame.time.get_ticks()
+                self.talking_to.finished_chat = True
+                self.talking_to.chat_node = None
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
