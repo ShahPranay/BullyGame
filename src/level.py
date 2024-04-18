@@ -13,6 +13,7 @@ from src.particles import AnimationPlayer
 from src.magic import MagicPlayer
 from src.chatbox import ChatBox
 from src.story import Story
+from src.menu import Menu
 
 class Level:
     def __init__(self):
@@ -41,6 +42,7 @@ class Level:
 
         # user interface 
         self.ui = UI()
+        self.menu = Menu(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -169,6 +171,8 @@ class Level:
                 self.is_talking = False
                 self.talking_to.finished_chat = True
                 self.talking_to.chat_node = None
+        elif self.game_paused:
+            self.menu.display_menu()
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
