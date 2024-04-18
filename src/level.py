@@ -77,9 +77,9 @@ class Level:
                                     'grass',
                                     random_grass_image)
 
-                        # if style == 'object':
-                        #     surf = graphics['objects'][int(col)]
-                        #     Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'object',surf)
+                        if style == 'object':
+                            surf = graphics['objects'][0]
+                            Tile((x,y),[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],'object',surf)
 
                         if style == 'entities':
                             if col == '394':
@@ -128,6 +128,8 @@ class Level:
                             offset = pygame.math.Vector2(0,75)
                             for leaf in range(randint(3,6)):
                                 self.animation_player.create_grass_particles(pos - offset,[self.visible_sprites])
+                            target_sprite.kill()
+                        elif target_sprite.sprite_type == 'object':
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
