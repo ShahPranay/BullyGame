@@ -67,13 +67,13 @@ class Level:
                         y = row_index * TILESIZE
                         if style == 'boundary':
                             Tile((x,y),[self.obstacle_sprites],'invisible')
-                        # if style == 'grass':
-                        #     random_grass_image = choice(graphics['grass'])
-                        #     Tile(
-                        #             (x,y),
-                        #             [self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
-                        #             'grass',
-                        #             random_grass_image)
+                        if style == 'grass':
+                            random_grass_image = choice(graphics['grass'])
+                            Tile(
+                                    (x,y),
+                                    [self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
+                                    'grass',
+                                    random_grass_image)
 
                         # if style == 'object':
                         #     surf = graphics['objects'][int(col)]
@@ -95,7 +95,7 @@ class Level:
                             #     elif col == '392': monster_name ='raccoon'
                             #     else: monster_name = 'squid'
         self.entity_map['bully1'] = Enemy(
-                'bamboo',
+                'bully1',
                 (5000,2200),
                 [self.visible_sprites,self.attackable_sprites],
                 self.obstacle_sprites,
