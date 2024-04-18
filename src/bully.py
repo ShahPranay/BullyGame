@@ -17,6 +17,7 @@ class Enemy(Entity):
 
         # movement
         self.rect = self.image.get_rect(topleft = pos)
+        self.origin = pygame.Vector2(pos)
         self.hitbox = self.rect.inflate(0,-10)
         self.obstacle_sprites = obstacle_sprites
 
@@ -66,22 +67,22 @@ class Enemy(Entity):
         for animation in self.animations.keys():
             self.animations[animation] = import_folder(main_path + animation)
 
-    def get_player_distance_direction(self,player):
+    def get_distance_direction(self,vec):
         enemy_vec = pygame.math.Vector2(self.rect.center)
-        player_vec = pygame.math.Vector2(player.rect.center)
-        distance = (player_vec - enemy_vec).magnitude()
+        distance = (vec - enemy_vec).magnitude()
 
         if distance > 0:
-            direction = (player_vec - enemy_vec).normalize()
+            direction = (vec - enemy_vec).normalize()
         else:
             direction = pygame.math.Vector2()
 
         return (distance,direction)
 
     def get_status(self, player):
-        distance = self.get_player_distance_direction(player)[0]
+        (player_distance, player_direction) = self.get_distance_direction(player.rect.center)
+        (origin_distance, origin_direction) = self.get_distance_direction(self.origin)
 
-        if self.mood != 'idle' and distance <= self.attack_radius:
+        if self.mood != 'idle' and player_distance <= self.attack_radius:
             if self.mood == 'talk':
                 self.initiate_chat(self)
                 self.status = 'idle'
@@ -90,19 +91,22 @@ class Enemy(Entity):
                 if self.status != 'attack':
                     self.frame_index = 0
                 self.status = 'attack'
-        elif distance <= self.notice_radius:
+        elif player_distance <= self.notice_radius:
             self.status = 'move'
+            self.direction = player_direction
         else:
-            self.status = 'idle'
+            if origin_distance >= 0.01:
+                self.status = 'move'
+                self.direction = origin_direction
+            else:
+                self.status = 'idle'
 
-    def actions(self,player):
+    def actions(self):
         if self.status == 'attack':
             self.attack_time = pygame.time.get_ticks()
             self.damage_player(self.attack_damage,self.attack_type)
             self.attack_sound.play()
-        elif self.status == 'move':
-            self.direction = self.get_player_distance_direction(player)[1]
-        else:
+        elif self.status != 'move':
             self.direction = pygame.math.Vector2()
 
     def animate(self):
@@ -168,4 +172,4 @@ class Enemy(Entity):
 
     def enemy_update(self,player):
         self.get_status(player)
-        self.actions(player)
+        self.actions()
