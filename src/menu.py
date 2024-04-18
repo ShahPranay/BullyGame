@@ -8,9 +8,10 @@ class Menu:
         self.player = player
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
 
-        # item dimensions
+        # item creation
         self.heigth = self.display_surface.get_size()[1]*0.3
         self.width = self.display_surface.get_size()[0]*0.3
+        self.create_options()
 
         # selection system
         self.selection_index = 0
@@ -42,14 +43,35 @@ class Menu:
                 self.can_select = True
 
     def create_options(self):
-        self.option_list = ['Restart', 'Quit']
+        self.option_list = []
 
-        for option in range(2):
-            full_width = self.display_surface.get_size()[0]
-            increment = full_width // 2
-            left = (option * increment) + (increment - )
+        # for option, index in range(2):
+        full_width = self.display_surface.get_size()[0]
+        increment = full_width // 2
+        left1 = (0 * increment) + (increment - self.width) // 2
+        left2 = (1 * increment) + (increment - self.width) // 2
+        top = self.display_surface.get_size()[1] * 0.4
+        item1 = Item(left1,top,self.width,self.heigth,0,self.font)
+        self.option_list.append(item1)
+        item2 = Item(left2,top,self.width,self.heigth,1,self.font)
+        self.option_list.append(item2)
+            
 
     def display_menu(self):
-        self.display_surface.fill('black')
         self.input()
         self.selection_cooldown()
+
+        for item in self.option_list:
+            item.display(self.display_surface,0, 'test')
+
+class Item:
+    def __init__(self,l,t,w,h,index,font):
+        self.rect = pygame.Rect(l,t,w,h)
+        self.index = index
+        self.font = font
+
+    # def display_names(self, surface, name, selected):
+        # title_surf = self.font.render(name, False
+
+    def display(self, surface, selection_num, name):
+        pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
