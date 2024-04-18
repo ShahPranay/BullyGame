@@ -11,7 +11,6 @@ from src.ui import UI
 # from src.bully import Bully
 from src.particles import AnimationPlayer
 from src.magic import MagicPlayer
-from src.upgrade import Upgrade
 from src.chatbox import ChatBox
 
 class Level:
@@ -39,7 +38,6 @@ class Level:
 
         # user interface 
         self.ui = UI()
-        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -66,17 +64,17 @@ class Level:
                         y = row_index * TILESIZE
                         if style == 'boundary':
                             Tile((x,y),[self.obstacle_sprites],'invisible')
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile(
-                                    (x,y),
-                                    [self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
-                                    'grass',
-                                    random_grass_image)
+                        # if style == 'grass':
+                        #     random_grass_image = choice(graphics['grass'])
+                        #     Tile(
+                        #             (x,y),
+                        #             [self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
+                        #             'grass',
+                        #             random_grass_image)
 
-                        if style == 'object':
-                            surf = graphics['objects'][int(col)]
-                            Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'object',surf)
+                        # if style == 'object':
+                        #     surf = graphics['objects'][int(col)]
+                        #     Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'object',surf)
 
                         if style == 'entities':
                             if col == '394':
@@ -107,11 +105,7 @@ class Level:
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
     def create_magic(self,style,strength,cost):
-        if style == 'heal':
-            self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
-
-        if style == 'flame':
-            self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
+            self.magic_player.rock(self.player,cost,[self.visible_sprites,self.attack_sprites])
 
     def destroy_attack(self):
         if self.current_attack:
@@ -171,8 +165,6 @@ class Level:
                 self.talking_to.mood = self.chatbox.action_type
                 self.talking_to.chat_node = self.chatbox.curNode
                 self.talking_to.chat_node_set_time = pygame.time.get_ticks()
-        elif self.game_paused:
-            self.upgrade.display()
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)

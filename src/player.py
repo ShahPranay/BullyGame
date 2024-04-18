@@ -28,6 +28,7 @@ class Player(Entity):
 		self.can_switch_weapon = True
 		self.weapon_switch_time = None
 		self.switch_duration_cooldown = 200
+		self.bat_unlock = False
 
 		# magic 
 		self.create_magic = create_magic
@@ -103,7 +104,7 @@ class Player(Entity):
 				cost = list(magic_data.values())[self.magic_index]['cost']
 				self.create_magic(style,strength,cost)
 
-			if keys[pygame.K_q] and self.can_switch_weapon:
+			if keys[pygame.K_q] and self.can_switch_weapon and self.bat_unlock:
 				self.can_switch_weapon = False
 				self.weapon_switch_time = pygame.time.get_ticks()
 				
@@ -163,6 +164,9 @@ class Player(Entity):
 		if not self.vulnerable:
 			if current_time - self.hurt_time >= self.invulnerability_duration:
 				self.vulnerable = True
+
+	def unlock_bat(self):
+		self.bat_unlock = True
 
 	def animate(self):
 		animation = self.animations[self.status]
