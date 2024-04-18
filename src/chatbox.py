@@ -17,6 +17,7 @@ class ChatBox:
 
         self.curNode = None
         self.cur_choice = 0
+        self.choice_made = 0
 
         self.status = 'ongoing'
 
@@ -53,13 +54,13 @@ class ChatBox:
         x = self.pos_choice_rect.left + 15
         y = self.pos_choice_rect.top + 15
         pygame.draw.rect(self.display_surface, getcolor(0), self.pos_choice_rect)
-        snip = self.font.render("Positive", True, getcolor(1))
+        snip = self.font.render("Agree", True, getcolor(1))
         self.display_surface.blit(snip, (x,y))
 
         x = self.neg_choice_rect.left + 15
         y = self.neg_choice_rect.top + 15
         pygame.draw.rect(self.display_surface, getcolor(1), self.neg_choice_rect)
-        snip = self.font.render("Negative", True, getcolor(0))
+        snip = self.font.render("FIGHT BACK", True, getcolor(0))
         self.display_surface.blit(snip, (x,y))
 
     def set_message(self):
@@ -79,6 +80,8 @@ class ChatBox:
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
+            if self.curNode.get_choice_cnt() == 2:
+                self.choice_made = self.cur_choice
             nxt_node = self.curNode.get_next_node(self.cur_choice)
             self.curNode = nxt_node
             if self.curNode is  None:

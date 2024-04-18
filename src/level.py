@@ -38,7 +38,7 @@ class Level:
 
         # sprite setup
         self.create_map()
-        self.story = Story(self.entity_map)
+        self.story = Story(self)
 
         # user interface 
         self.ui = UI()
@@ -106,6 +106,20 @@ class Level:
                 self.trigger_death_particles,
                 self.add_exp)
 
+    def create_bully2(self):
+        self.entity_map['bully2'] = Enemy(
+                'bully2',
+                (3635,1338),
+                [self.visible_sprites,self.attackable_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
+
+    def create_bully3(self):
+        pass
+
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
@@ -124,6 +138,7 @@ class Level:
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == 'grass':
+                            self.player.grass_cnt += 1
                             pos = target_sprite.rect.center
                             offset = pygame.math.Vector2(0,75)
                             for leaf in range(randint(3,6)):
