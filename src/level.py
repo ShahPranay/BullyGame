@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from src.bully import Enemy
 from src.settings import *
 from src.tile import Tile
@@ -211,6 +211,12 @@ class Level:
                 self.talking_to.chat_node = None
         elif self.game_paused:
             self.menu.display_menu()
+            if self.menu.isRestart:
+                self.menu.isRestart = False
+                self.__init__()
+            if self.menu.isQuit:
+                pygame.quit()
+                sys.exit()
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)

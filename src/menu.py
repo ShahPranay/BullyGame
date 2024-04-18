@@ -7,6 +7,8 @@ class Menu:
         self.display_surface = pygame.display.get_surface()
         self.player = player
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
+        self.isRestart = False
+        self.isQuit = False
 
         # item creation
         self.heigth = self.display_surface.get_size()[1]*0.3
@@ -34,7 +36,10 @@ class Menu:
             if keys[pygame.K_SPACE]:
                 self.can_select = False
                 self.selection_time = pygame.time.get_ticks()
-                print(self.selection_index)
+                if self.selection_index == 0:
+                    self.isRestart = True      
+                if self.selection_index == 1:
+                    self.isQuit = True
         
     def selection_cooldown(self):
         if not self.can_select:
@@ -60,9 +65,9 @@ class Menu:
     def display_menu(self):
         self.input()
         self.selection_cooldown()
-
-        for item in self.option_list:
-            item.display(self.display_surface,0, 'test')
+        self.option_list[0].display(self.display_surface,self.selection_index, 'Restart')
+        self.option_list[1].display(self.display_surface,self.selection_index, 'Quit')
+        
 
 class Item:
     def __init__(self,l,t,w,h,index,font):
@@ -70,8 +75,19 @@ class Item:
         self.index = index
         self.font = font
 
-    # def display_names(self, surface, name, selected):
-        # title_surf = self.font.render(name, False
+    def display_names(self, surface, name, selected):
+        color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
+        title_surf = self.font.render(name, False, color)
+        title_rect = title_surf.get_rect(center = self.rect.center + pygame.math.Vector2(0,0))
+
+        surface.blit(title_surf, title_rect)
 
     def display(self, surface, selection_num, name):
-        pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
+        if selection_num == self.index:
+            pygame.draw.rect(surface, UPGRADE_BG_COLOR_SELECTED, self.rect)
+            pygame.draw.rect(surface, UI_BORDER_COLOR, self.rect, 4)
+        else:
+            pygame.draw.rect(surface, UI_BG_COLOR,self.rect)
+            pygame.draw.rect(surface, UI_BORDER_COLOR,self.rect, 4)
+
+        self.display_names(surface, name, self.index == selection_num)
