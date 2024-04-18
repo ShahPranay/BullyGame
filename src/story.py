@@ -40,6 +40,7 @@ def fun_3(story):
 
     if story.entity_map['bully2'].finished_chat:
         if story.level.chatbox.choice_made == 1:
+            story.level.chatbox.choice_made = 0
             story.entity_map['bully2'].mood = 'attack'
             return 5
         else:
@@ -70,24 +71,56 @@ def fun_5(story):
 
 def fun_6(story):
     if story.entity_map['bully3'].finished_chat:
-            story.entity_map['bully3'].mood = 'idle'
-            story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_standby'])
-            # story.level.create_student()
-            story.entity_map['student'].set_chat_node(story.chattrees['student_intro'])
-            return 7
+        story.entity_map['bully3'].mood = 'idle'
+        story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_standby'])
+        story.level.create_bully4()
+        story.entity_map['bully4'].set_chat_node(story.chattrees['student_intro'])
+        return 7
+
+    return 6 
 
 
 def fun_7(story):
-    if story.entity_map['student'].finished_chat:
-        pass
+    if story.entity_map['bully4'].finished_chat:
+        if story.level.chatbox.choice_made == 1:
+            story.level.chatbox.choice_made = 0
+            story.entity_map['bully4'].mood = 'attack'
+            story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_finishtask'])
+            return 8
+        else:
+            story.entity_map['bully4'].mood = 'idle'
+            story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_betray'])
+            return 9
+
     if story.entity_map['bully3'].finished_chat:
         if story.level.chatbox.choice_made == 1:
+            story.level.chatbox.choice_made = 0
             story.entity_map['bully3'].mood = 'attack'
-            return 8
+            return 10
         else:
             story.entity_map['bully3'].mood = 'idle'
             story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_standby'])
-            return 7
+
+    return 7
+
+
+def fun_8(story):
+    if story.entity_map['bully3'].finished_chat:
+        story.entity_map['bully3'].kill()
+        return 10
+
+    return 8 
+
+def fun_9(story):
+    if story.entity_map['bully3'].finished_chat:
+        story.entity_map['bully3'].mood = 'attack'
+        return 10
+    
+    return 9
+
+def fun_10(story):
+    print("game over")
+    return 10
 
 class Story:
     def __init__(self, level):
@@ -105,6 +138,11 @@ class Story:
                 3 : fun_3,
                 4 : fun_4,
                 5 : fun_5,
+                6 : fun_6,
+                7 : fun_7,
+                8 : fun_8,
+                9 : fun_9,
+                10 : fun_10,
                 }
 
     def update(self):

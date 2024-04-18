@@ -118,7 +118,27 @@ class Level:
                 self.add_exp)
 
     def create_bully3(self):
-        pass
+        self.entity_map['bully3'] = Enemy(
+                'bully3',
+                (1719,1079),
+                [self.visible_sprites,self.attackable_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
+
+    def create_bully4(self):
+        self.entity_map['bully4'] = Enemy(
+                'bully4',
+                (3259,2645),
+                [self.visible_sprites,self.attackable_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
+
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
@@ -145,6 +165,7 @@ class Level:
                                 self.animation_player.create_grass_particles(pos - offset,[self.visible_sprites])
                             target_sprite.kill()
                         elif target_sprite.sprite_type == 'object':
+                            self.player.panty_cnt += 1
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
