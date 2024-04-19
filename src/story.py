@@ -51,6 +51,7 @@ def fun_2(story):
     return 2
 
 def fun_3(story):
+    
     if story.entity_map['player'].panty_cnt >= 1:
         story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_finishtask'])
         return 4
@@ -63,6 +64,7 @@ def fun_3(story):
             return 5
         else:
             story.entity_map['bully2'].mood = 'idle'
+            story.level.create_panty()
             story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_standby'])
 
     return 3
@@ -153,7 +155,6 @@ class Story:
         self.entity_map = level.entity_map
         self.chattrees = import_csv_chat_tree('./chat_trees')
         self.level = level
-
         self.entity_map['bully1'].set_chat_node(self.chattrees['bully1_givetask'])
         # self.entity_map['narrator'].set_chat_node(self.chattrees['narrator_bat'])
         self.entity_map['narrator'].set_chat_node(self.chattrees['narrator_intro'])

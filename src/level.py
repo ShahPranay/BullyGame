@@ -56,12 +56,10 @@ class Level:
         layouts = {
                 'boundary': import_csv_layout('./map/map_FloorBlocks.csv'),
                 'grass': import_csv_layout('./map/map_Grass.csv'),
-                'object': import_csv_layout('./map/map_Objects.csv'),
                 'entities': import_csv_layout('./map/map_Entities.csv')
                 }
         graphics = {
                 'grass': import_folder('./graphics/grass'),
-                'objects': import_folder('./graphics/objects')
                 }
 
         for style,layout in layouts.items():
@@ -80,7 +78,7 @@ class Level:
                                     'grass',
                                     random_grass_image)
 
-                        if style == 'object':
+                        if style == 'object' and self.story.isPantyAvailable:
                             surf = graphics['objects'][0]
                             Tile((x,y),[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],'object',surf)
 
@@ -120,6 +118,17 @@ class Level:
                 self.add_exp)
 
         self.entity_map['narrator'].speed = 7
+
+    def create_panty(self):
+        layout = import_csv_layout('./map/map_Objects.csv')
+        graphics = {'objects': import_folder('./graphics/objects')}
+        for row_index,row in enumerate(layout):
+            for col_index, col in enumerate(row):
+                if col != '-1':
+                    x = col_index * TILESIZE
+                    y = row_index * TILESIZE
+                    surf = graphics['objects'][0]
+                    Tile((x,y),[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],'object',surf)
 
     def create_bully2(self):
         self.entity_map['bully2'] = Enemy(
