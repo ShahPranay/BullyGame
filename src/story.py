@@ -14,7 +14,7 @@ def fun_0(story):
     return 0
 
 def fun_1(story):
-    if story.entity_map['player'].grass_cnt >= 1:
+    if story.entity_map['player'].grass_cnt >= 10:
         story.entity_map['bully1'].set_chat_node(story.chattrees['bully1_finishtask'])
         story.entity_map['security'].chat_node = None
         story.entity_map['security'].mood = 'idle'
@@ -52,7 +52,7 @@ def fun_2(story):
 
 def fun_3(story):
     
-    if story.entity_map['player'].panty_cnt >= 10:
+    if story.entity_map['player'].panty_cnt >= 1:
         story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_finishtask'])
         return 4
 
