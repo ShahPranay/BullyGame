@@ -202,4 +202,4 @@ class Player(Entity):
         self.cooldowns()
         self.get_status()
         self.animate()
-        self.move(self.stats['speed'])
+        self.move(self.speed)

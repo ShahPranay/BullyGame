@@ -32,11 +32,11 @@ class Enemy(Entity):
         self.attack_radius = monster_info['attack_radius']
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
+        self.attack_cooldown = monster_info['attack_cooldown']
 
         # player interaction
         self.can_attack = True
         self.attack_time = None
-        self.attack_cooldown = 400
         self.damage_player = damage_player
         self.trigger_death_particles = trigger_death_particles
         self.add_exp = add_exp
@@ -89,7 +89,7 @@ class Enemy(Entity):
         (player_distance, player_direction) = self.get_distance_direction(player.rect.center)
         (origin_distance, origin_direction) = self.get_distance_direction(self.origin)
 
-        if self.mood != 'idle':
+        if self.mood != 'idle' and player_distance <= self.notice_radius:
             if player_distance <= self.attack_radius:
                 if self.mood == 'talk':
                     self.initiate_chat(self)
@@ -100,7 +100,7 @@ class Enemy(Entity):
                     if self.status != 'attack':
                         self.frame_index = 0
                     self.status = 'attack'
-            elif player_distance <= self.notice_radius:
+            else:
                 self.status = 'move'
                 self.direction = player_direction
         else:
