@@ -17,8 +17,8 @@ class Menu:
 
         # selection system
         self.selection_index = 0
-        self.selection_time = None
-        self.can_select = True
+        self.selection_time = pygame.time.get_ticks()
+        self.can_select = False
 
     def input(self):
         keys = pygame.key.get_pressed()

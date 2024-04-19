@@ -63,7 +63,7 @@ class Enemy(Entity):
         self.attack_sound.set_volume(0.6)
 
     def set_chat_node(self, chat_node):
-        print("set_chat_node")
+        print("set_chat_node", chat_node.text)
         self.chat_node = chat_node
         self.finished_chat = False
         self.chat_node_set_time = pygame.time.get_ticks()

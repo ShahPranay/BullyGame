@@ -12,7 +12,7 @@ class ChatBox:
         self.make_rects()
 
         self.counter = 0
-        self.text_speed = 3
+        self.text_speed = 1
         self.done = True
 
         self.curNode = None
@@ -111,6 +111,15 @@ class ChatBox:
             if current_time - self.choice_change_time >= 150:
                 self.can_change_choice = True
 
+    def attach_text(self, msg):
+        arr = msg.split('-')
+        x = self.rect.left + 30
+        y = self.rect.top + 30
+        for line in arr:
+            snip = self.font.render(line, True, 'white')
+            self.display_surface.blit(snip, (x, y))
+            y += 30
+
     def display(self):
         self.cooldowns()
         self.inputs()
@@ -123,10 +132,7 @@ class ChatBox:
         else:
             self.done = True
 
-        snip = self.font.render(self.message[0:self.counter//self.text_speed], True, 'white')
-        x = self.rect.left + 30
-        y = self.rect.top + 30
-        self.display_surface.blit(snip, (x, y))
+        self.attach_text(self.message[0:self.counter // self.text_speed])
 
         if self.done and self.curNode.get_choice_cnt() == 2:
             self.draw_choices()

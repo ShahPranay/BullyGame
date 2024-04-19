@@ -48,6 +48,9 @@ class Level:
         self.animation_player = AnimationPlayer()
         self.magic_player = MagicPlayer(self.animation_player)
 
+        self.gameover = False
+        self.gameover_narrator = False
+
 
     def create_map(self):
         layouts = {
@@ -105,6 +108,18 @@ class Level:
                 self.damage_player,
                 self.trigger_death_particles,
                 self.add_exp)
+
+        self.entity_map['narrator'] = Enemy(
+                'bully1',
+                self.player.rect.center,
+                [],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
+
+        self.entity_map['narrator'].speed = 7
 
     def create_bully2(self):
         self.entity_map['bully2'] = Enemy(
@@ -209,11 +224,12 @@ class Level:
         self.game_paused = not self.game_paused 
 
     def run(self):
+        self.entity_map['narrator'].origin = self.player.rect.center
         self.visible_sprites.custom_draw(self.player)
         self.ui.display(self.player)
         self.story.update()
 
-        if self.player.health<=0:
+        if self.gameover:
             self.game_paused = True
 
         if self.is_talking:
@@ -235,6 +251,8 @@ class Level:
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
+            self.entity_map['narrator'].update()
+            self.entity_map['narrator'].enemy_update(self.player)
             self.player_attack_logic()
 
 

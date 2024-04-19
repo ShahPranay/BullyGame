@@ -7,8 +7,11 @@ def fun_0(story):
         story.level.create_security()
         story.entity_map['security'].set_chat_node(story.chattrees['security_complain'])
         return 1
-    else:
-        return 0
+
+    elif story.entity_map['narrator'].finished_chat:
+        story.entity_map['narrator'].mood = 'idle'
+
+    return 0
 
 def fun_1(story):
     if story.entity_map['player'].grass_cnt >= 1:
@@ -27,6 +30,7 @@ def fun_1(story):
             story.level.create_bully2()
             story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_givetask'])
             story.level.entity_map['player'].speed = 10
+            story.level.entity_map['narrator'].speed = 10
             return 3
 
     if story.entity_map['bully1'].finished_chat:
@@ -68,6 +72,8 @@ def fun_4(story):
         story.entity_map['bully2'].kill()
         del story.entity_map['bully2']
         story.level.create_bully3()
+        ### error in this line
+        story.entity_map['narrator'].set_chat_node(story.chattrees['narrator_bat'])
         story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_givetask'])
         return 6
     
@@ -90,6 +96,9 @@ def fun_6(story):
         story.level.create_bully4()
         story.entity_map['bully4'].set_chat_node(story.chattrees['student_intro'])
         return 7
+
+    if story.entity_map['narrator'].finished_chat:
+        story.entity_map['narrator'].mood = 'idle'
 
     return 6 
 
@@ -148,6 +157,8 @@ class Story:
         self.level = level
 
         self.entity_map['bully1'].set_chat_node(self.chattrees['bully1_givetask'])
+        # self.entity_map['narrator'].set_chat_node(self.chattrees['narrator_bat'])
+        self.entity_map['narrator'].set_chat_node(self.chattrees['narrator_intro'])
         
         self.funcs = {
                 0 : fun_0,
@@ -163,5 +174,20 @@ class Story:
                 10 : fun_10,
                 }
 
+    def check_gameover(self):
+        if self.level.gameover:
+            return
+
+        if not self.level.gameover_narrator and self.entity_map['player'].health <= 0:
+            self.level.gameover_narrator = True
+            self.entity_map['narrator'].set_chat_node(self.chattrees['narrator_gameover'])
+            self.entity_map['narrator'].chat_node_set_time = 0
+
+        if self.level.gameover_narrator and self.entity_map['narrator'].finished_chat:
+            self.level.gameover = True
+            self.level.menu.selection_time = pygame.time.get_ticks()
+            self.entity_map['narrator'].mood = 'idle'
+
     def update(self):
+        self.check_gameover()
         self.cur_state = self.funcs[self.cur_state](self)

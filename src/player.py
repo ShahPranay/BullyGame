@@ -1,7 +1,6 @@
 import pygame
 from src.settings import *
 from src.support import import_folder
-from src.debug import debug
 from src.entity import Entity
 
 class Player(Entity):
@@ -197,7 +196,6 @@ class Player(Entity):
 
 
     def update(self):
-        debug(self.rect.center)
         self.input()
         self.cooldowns()
         self.get_status()
