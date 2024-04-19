@@ -156,7 +156,7 @@ class Level:
         self.entity_map['security'] = Enemy(
                 'security',
                 (716,2799),
-                [self.visible_sprites,self.attackable_sprites],
+                [self.visible_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
