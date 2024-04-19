@@ -145,7 +145,6 @@ def fun_9(story):
     return 9
 
 def fun_10(story):
-    print("game over")
     return 10
 
 class Story:
