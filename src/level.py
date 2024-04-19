@@ -202,7 +202,6 @@ class Level:
         self.player.exp += amount
 
     def toggle_menu(self):
-
         self.game_paused = not self.game_paused 
 
     def run(self):

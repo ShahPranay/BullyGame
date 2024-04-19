@@ -71,7 +71,7 @@ def fun_4(story):
 
 def fun_5(story):
     if story.entity_map['bully2'].health <= 0:
-        story.entity_map['player'].bat_unlock = True
+        story.entity_map['player'].unlock_bat()
         del story.entity_map['bully2']
         story.level.create_bully3()
         story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_givetask'])
@@ -99,6 +99,7 @@ def fun_7(story):
             return 8
         else:
             story.entity_map['bully4'].mood = 'idle'
+            story.entity_map['player'].unlock_magic()
             story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_betray'])
             return 9
 
