@@ -85,7 +85,6 @@ class ChatBox:
             nxt_node = self.curNode.get_next_node(self.cur_choice)
             self.curNode = nxt_node
             if self.curNode is  None:
-                print("status changed to finished")
                 self.status = 'finished'
                 return
             self.set_message()
