@@ -72,8 +72,6 @@ def fun_4(story):
         story.entity_map['bully2'].kill()
         del story.entity_map['bully2']
         story.level.create_bully3()
-        ### error in this line
-        story.entity_map['narrator'].set_chat_node(story.chattrees['narrator_bat'])
         story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_givetask'])
         return 6
     
@@ -84,6 +82,7 @@ def fun_5(story):
         story.entity_map['player'].unlock_bat()
         del story.entity_map['bully2']
         story.level.create_bully3()
+        story.entity_map['narrator'].set_chat_node(story.chattrees['narrator_bat'])
         story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_givetask'])
         return 6
 
