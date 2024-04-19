@@ -154,7 +154,7 @@ class Level:
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
     def create_magic(self,style,strength,cost):
-            self.magic_player.rock(self.player,cost,[self.visible_sprites,self.attack_sprites])
+            self.magic_player.rock(self.player,[self.visible_sprites,self.attack_sprites])
 
     def destroy_attack(self):
         if self.current_attack:

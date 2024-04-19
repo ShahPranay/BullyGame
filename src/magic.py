@@ -9,9 +9,9 @@ class MagicPlayer:
 		'rock':pygame.mixer.Sound('./audio/Fire.wav')
 		}
 
-	def rock(self,player,cost,groups):
-		if player.energy >= cost:
-			player.energy -= cost
+	def rock(self,player,groups):
+		if player.rock_count >= 1:
+			player.rock_count -= 1
 			self.sounds['rock'].play()
 
 			if player.status.split('_')[0] == 'right': direction = pygame.math.Vector2(1,0)

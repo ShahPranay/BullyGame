@@ -10,7 +10,6 @@ class UI:
 
 		# bar setup 
 		self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-		self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 
 		# convert weapon dictionaryswo
 		self.weapon_graphics = []
@@ -66,20 +65,21 @@ class UI:
 
 		self.display_surface.blit(weapon_surf,weapon_rect)
 
-	def magic_overlay(self,magic_index,has_switched):
+	def magic_overlay(self,magic_index,rock_count,has_switched):
 		bg_rect = self.selection_box(80,635,has_switched)
 		magic_surf = self.magic_graphics[magic_index]
+		count_surf = self.font.render(str(rock_count),False,TEXT_COLOR)
 		magic_rect = magic_surf.get_rect(center = bg_rect.center)
-
+		count_rect = count_surf.get_rect(bottomright = bg_rect.bottomright)
 		self.display_surface.blit(magic_surf,magic_rect)
+		self.display_surface.blit(count_surf,count_rect)
 
 	def display(self,player):
 		self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
-		self.show_bar(player.energy,player.stats['energy'],self.energy_bar_rect,ENERGY_COLOR)
 
 		self.show_exp(player.exp)
 
 		self.weapon_overlay(player.weapon_index,not player.can_switch_weapon)
-		
+
 		if player.magic_unlock:
-			self.magic_overlay(player.magic_index,not player.can_switch_magic)
+			self.magic_overlay(player.magic_index, player.rock_count, not player.can_switch_magic)
