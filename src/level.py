@@ -99,24 +99,37 @@ class Level:
         self.entity_map['bully1'] = Enemy(
                 'bully1',
                 (5000,2200),
-                [self.visible_sprites,self.attackable_sprites],
+                [self.visible_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
                 self.trigger_death_particles,
                 self.add_exp)
 
-    def create_bully2(self):
+    def create_bully2NA(self):
         self.entity_map['bully2'] = Enemy(
                 'bully2',
                 (3635,1338),
+                [self.visible_sprites],
+                self.obstacle_sprites,
+                self.initiate_chat,
+                self.damage_player,
+                self.trigger_death_particles,
+                self.add_exp)
+        
+    def create_bully2A(self):
+        (x,y) = self.entity_map['bully2'].origin
+        self.entity_map['bully2'].kill()
+        self.entity_map['bully2'] = Enemy(
+                'bully2',
+                (x,y),
                 [self.visible_sprites,self.attackable_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
                 self.trigger_death_particles,
                 self.add_exp)
-
+    
     def create_bully3(self):
         self.entity_map['bully3'] = Enemy(
                 'bully3',

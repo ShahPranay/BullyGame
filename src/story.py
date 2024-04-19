@@ -37,7 +37,7 @@ def fun_2(story):
     if 'bully1' in story.entity_map and story.entity_map['bully1'].finished_chat:
         story.entity_map['bully1'].kill()
         del story.entity_map['bully1']
-        story.level.create_bully2()
+        story.level.create_bully2NA()
         story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_givetask'])
         return 3
 
@@ -51,6 +51,7 @@ def fun_3(story):
     if story.entity_map['bully2'].finished_chat:
         if story.level.chatbox.choice_made == 1:
             story.level.chatbox.choice_made = 0
+            story.level.create_bully2A()
             story.entity_map['bully2'].mood = 'attack'
             return 5
         else:
