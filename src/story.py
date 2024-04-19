@@ -13,6 +13,8 @@ def fun_0(story):
 def fun_1(story):
     if story.entity_map['player'].grass_cnt >= 1:
         story.entity_map['bully1'].set_chat_node(story.chattrees['bully1_finishtask'])
+        story.entity_map['security'].chat_node = None
+        story.entity_map['security'].mood = 'idle'
         return 2
 
     if story.entity_map['security'].finished_chat:
@@ -24,6 +26,7 @@ def fun_1(story):
             del story.entity_map['bully1']
             story.level.create_bully2()
             story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_givetask'])
+            story.level.entity_map['player'].speed = 10
             return 3
 
     if story.entity_map['bully1'].finished_chat:
@@ -37,7 +40,7 @@ def fun_2(story):
     if 'bully1' in story.entity_map and story.entity_map['bully1'].finished_chat:
         story.entity_map['bully1'].kill()
         del story.entity_map['bully1']
-        story.level.create_bully2NA()
+        story.level.create_bully2()
         story.entity_map['bully2'].set_chat_node(story.chattrees['bully2_givetask'])
         return 3
 
@@ -51,8 +54,8 @@ def fun_3(story):
     if story.entity_map['bully2'].finished_chat:
         if story.level.chatbox.choice_made == 1:
             story.level.chatbox.choice_made = 0
-            story.level.create_bully2A()
             story.entity_map['bully2'].mood = 'attack'
+            story.level.make_entity_attakable(story.entity_map['bully2'])
             return 5
         else:
             story.entity_map['bully2'].mood = 'idle'
@@ -96,6 +99,7 @@ def fun_7(story):
         if story.level.chatbox.choice_made == 1:
             story.level.chatbox.choice_made = 0
             story.entity_map['bully4'].mood = 'attack'
+            story.level.make_entity_attakable(story.entity_map['bully4'])
             story.entity_map['bully3'].set_chat_node(story.chattrees['bully3_finishtask'])
             return 8
         else:
@@ -108,6 +112,7 @@ def fun_7(story):
         if story.level.chatbox.choice_made == 1:
             story.level.chatbox.choice_made = 0
             story.entity_map['bully3'].mood = 'attack'
+            story.level.make_entity_attakable(story.entity_map['bully3'])
             return 10
         else:
             story.entity_map['bully3'].mood = 'idle'
@@ -126,6 +131,7 @@ def fun_8(story):
 def fun_9(story):
     if story.entity_map['bully3'].finished_chat:
         story.entity_map['bully3'].mood = 'attack'
+        story.level.make_entity_attakable(story.entity_map['bully3'])
         return 10
     
     return 9

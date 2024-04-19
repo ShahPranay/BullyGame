@@ -106,7 +106,7 @@ class Level:
                 self.trigger_death_particles,
                 self.add_exp)
 
-    def create_bully2NA(self):
+    def create_bully2(self):
         self.entity_map['bully2'] = Enemy(
                 'bully2',
                 (3635,1338),
@@ -117,24 +117,12 @@ class Level:
                 self.trigger_death_particles,
                 self.add_exp)
         
-    def create_bully2A(self):
-        (x,y) = self.entity_map['bully2'].origin
-        self.entity_map['bully2'].kill()
-        self.entity_map['bully2'] = Enemy(
-                'bully2',
-                (x,y),
-                [self.visible_sprites,self.attackable_sprites],
-                self.obstacle_sprites,
-                self.initiate_chat,
-                self.damage_player,
-                self.trigger_death_particles,
-                self.add_exp)
     
     def create_bully3(self):
         self.entity_map['bully3'] = Enemy(
                 'bully3',
                 (1719,1079),
-                [self.visible_sprites,self.attackable_sprites],
+                [self.visible_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
@@ -145,7 +133,7 @@ class Level:
         self.entity_map['bully4'] = Enemy(
                 'bully4',
                 (3259,2645),
-                [self.visible_sprites,self.attackable_sprites],
+                [self.visible_sprites],
                 self.obstacle_sprites,
                 self.initiate_chat,
                 self.damage_player,
@@ -162,6 +150,9 @@ class Level:
                 self.damage_player,
                 self.trigger_death_particles,
                 self.add_exp)
+
+    def make_entity_attakable(self, entity):
+        self.attackable_sprites.add(entity)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
