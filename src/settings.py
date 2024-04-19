@@ -49,14 +49,14 @@ weapon_data = {
 
 # magic
 magic_data = {
-	'rock': {'strength': 5,'cost': 20,'graphic':'./graphics/particles/rock/rock.png'}
+	'rock': {'strength': 10,'cost': 20,'graphic':'./graphics/particles/rock/rock.png'}
 	}
 
 # enemy
 monster_data = {
-        'bully1': {'health': 100,'exp':100,'damage':10,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 360, 'attack_cooldown': 400},
-	'bully2': {'health': 100,'exp':250,'damage':10,'attack_type': 'slash',  'attack_sound':'./audio/attack/slash.wav','speed': 2, 'resistance': 3, 'attack_radius': 60, 'notice_radius': 400, 'attack_cooldown': 400},
-	'bully3': {'health': 300,'exp':110,'damage':30,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 4, 'resistance': 3, 'attack_radius': 150, 'notice_radius': 350, 'attack_cooldown': 600},
-	'bully4': {'health': 70,'exp':120,'damage':8,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300, 'attack_cooldown': 600},
+        'bully1': {'health': 100,'exp':100,'damage':10,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 360, 'attack_cooldown': 400},
+	'bully2': {'health': 200,'exp':250,'damage':20,'attack_type': 'slash',  'attack_sound':'./audio/attack/slash.wav','speed': 3, 'resistance': 3, 'attack_radius': 60, 'notice_radius': 400, 'attack_cooldown': 400},
+	'bully3': {'health': 450,'exp':110,'damage':30,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 4, 'resistance': 3, 'attack_radius': 150, 'notice_radius': 350, 'attack_cooldown': 600},
+	'bully4': {'health': 100,'exp':120,'damage':8,'attack_type': 'slash', 'attack_sound':'./audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300, 'attack_cooldown': 600},
     'security': {'health': 1e8, 'exp': 0, 'damage': 0, 'attack_type': 'slash', 'attack_sound': './audio/attack/slash.wav', 'speed': 0, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 50, 'attack_cooldown': 400}
     }
